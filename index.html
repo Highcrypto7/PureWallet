@@ -44,7 +44,7 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12 space-y-16">
+    <main class="container mx-auto px-4 sm:px-6 py-12 space-y-16 overflow-hidden">
         <!-- 회사 소개 -->
         <section class="bg-white rounded-3xl shadow-xl p-12">
             <div class="text-center mb-12">
@@ -197,7 +197,7 @@
         </section>
 
         <!-- 한국 시장 분석 -->
-        <section class="bg-white rounded-3xl shadow-xl p-12">
+        <section class="bg-white rounded-3xl shadow-xl p-6 sm:p-12 overflow-hidden">
             <div class="text-center mb-12">
                 <h2 class="text-4xl font-bold text-gray-800 mb-6">
                     <i class="fas fa-flag text-red-600 mr-4"></i>한국 크립토 시장의 기회
@@ -205,8 +205,8 @@
                 <p class="text-xl text-gray-600">전 세계 거래량 10%를 차지하는 핵심 시장, 그러나 퓨어월렛의 인지도는 여전히 낮음</p>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-12 mb-12">
-                <div>
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <div class="order-2 lg:order-1">
                     <h3 class="text-2xl font-bold text-gray-800 mb-6">시장 현황 & 기회</h3>
                     <div class="space-y-6">
                         <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg">
@@ -235,10 +235,12 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="order-1 lg:order-2">
                     <h3 class="text-2xl font-bold text-gray-800 mb-6">시장 데이터 시각화</h3>
-                    <div class="bg-gray-50 rounded-2xl p-6">
-                        <canvas id="marketChart" style="height: 400px;"></canvas>
+                    <div class="bg-gray-50 rounded-2xl p-4 sm:p-6 w-full overflow-hidden">
+                        <div class="w-full" style="position: relative; height: 350px; max-width: 100%;">
+                            <canvas id="marketChart" style="width: 100% !important; height: 100% !important; max-width: 100%;"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -248,21 +250,21 @@
                     <i class="fas fa-bullseye text-orange-600 mr-2"></i>왜 한국 시장이 중요한가?
                 </h3>
                 <div class="grid md:grid-cols-3 gap-6">
-                    <div class="text-center">
+                    <div class="text-center px-4">
                         <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background-color: #ea580c;">
                             <i class="fas fa-globe-asia text-white text-2xl"></i>
                         </div>
                         <h4 class="text-lg font-bold text-gray-800 mb-2">글로벌 10% 점유</h4>
                         <p class="text-gray-600">전 세계 가상자산 거래량의 10%를 차지하는 핵심 시장</p>
                     </div>
-                    <div class="text-center">
+                    <div class="text-center px-4">
                         <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-mobile-alt text-white text-2xl"></i>
                         </div>
                         <h4 class="text-lg font-bold text-gray-800 mb-2">개인지갑 선호</h4>
                         <p class="text-gray-600">개인지갑을 통한 투자 비율이 세계 최고 수준</p>
                     </div>
-                    <div class="text-center">
+                    <div class="text-center px-4">
                         <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-rocket text-white text-2xl"></i>
                         </div>
@@ -914,8 +916,8 @@
                     <h3 class="text-2xl font-bold text-gray-800 mb-6">왜 하이크립토와 함께해야 할까요?</h3>
                     <div class="space-y-4">
                         <div class="flex items-start space-x-4">
-                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                <i class="fas fa-target text-white text-sm"></i>
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style="background-color: #2563eb;">
+                                <i class="fas fa-bullseye text-white text-sm"></i>
                             </div>
                             <div>
                                 <h4 class="font-bold text-gray-800">정확한 타겟팅</h4>
@@ -1041,6 +1043,8 @@
     <script>
         // 시장 데이터 차트
         const ctx = document.getElementById('marketChart').getContext('2d');
+        const isMobile = window.innerWidth < 768;
+        
         new Chart(ctx, {
             type: 'bar',
             data: {
@@ -1064,8 +1068,17 @@
                 }]
             },
             options: {
+                indexAxis: isMobile ? 'y' : 'x',
                 responsive: true,
                 maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        bottom: 20,
+                        left: isMobile ? 10 : 10,
+                        right: isMobile ? 10 : 10,
+                        top: 10
+                    }
+                },
                 plugins: {
                     legend: {
                         display: false
@@ -1074,8 +1087,11 @@
                         display: true,
                         text: '한국 크립토 시장의 잠재력',
                         font: {
-                            size: 18,
+                            size: isMobile ? 14 : 18,
                             weight: 'bold'
+                        },
+                        padding: {
+                            bottom: 20
                         }
                     }
                 },
@@ -1084,11 +1100,21 @@
                         beginAtZero: true,
                         grid: {
                             color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        ticks: {
+                            font: {
+                                size: isMobile ? 10 : 12
+                            }
                         }
                     },
                     x: {
                         grid: {
-                            display: false
+                            display: isMobile ? true : false
+                        },
+                        ticks: {
+                            font: {
+                                size: isMobile ? 9 : 11
+                            }
                         }
                     }
                 }
